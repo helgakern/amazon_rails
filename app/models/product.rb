@@ -2,7 +2,8 @@ class Product < ApplicationRecord
     before_validation(:set_default_price)
     before_save(:capitalize_title)
     
-    
+    has_many(:reviews, dependant: :destroy)
+
     validates(:title, presence: true, uniqueness: {case_sensitive: false})
     validates(
         :description,
