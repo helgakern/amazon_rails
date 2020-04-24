@@ -6,7 +6,7 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-
+Review.delete_all
 Product.delete_all
 NUM_PRODUCT = 1000
 
@@ -18,8 +18,15 @@ NUM_PRODUCT.times do
         price: Faker::Number.decimal(l_digits: 2)
         
     )
+    if q.valid?
+        q.reviews = rand(0..15).times.map do
+            Review.new(body: Faker::GreekPhilosophers.quote)
+        end
+    end
 end
 
+review = Review.all
 product = Product.all 
 
 puts Cowsay.say("Generated #{product.count} products", :dragon)
+puts Cowsay.say("Generated #{review.count} reviews", :tux)
