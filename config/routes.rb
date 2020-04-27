@@ -1,23 +1,26 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
-  root 'products#index'
-  # get "/products/new" => "products#new", as: :new_product
-  # post "/products" => "products#create", as: :products
-  # get "/products/:id" => "products#show", as: :product 
-  # get "/products" => "products#index"
-  # delete "/products/:id" => "products#destroy"
-  # get "/products/:id/edit" => "products#edit", as: :edit_product
-  # patch "/products/:id" => "products#update"
-  
+  get('/home', to: 'welcome#home')
+  get('/about', to: 'welcome#about')
+  get('/contact_us', to: 'welcome#contact_us')
+  post('/thank_you', to: 'welcome#thank_you')
+
+  #bill splitter
+  get '/bill_splitter', to: 'bill_splitter#new'
+  post '/calculate_split', to: 'bill_splitter#create'
+
+  # RESTful Product Routes
+  #  get '/products/new', to: 'products#new', as: :new_product
+  #  post '/products', to: 'products#create'
+  #  get '/products/:id', to: 'products#show', as: :product
+  #  get '/products', to: 'products#index'
+  #  delete '/products/:id', to: 'products#destroy'
+  #  get '/products/:id/edit', to: 'products#edit', as: :edit_product
+  #  patch '/products/:id', to: 'products#update'
+
   resources :products do
-    # creates the following route for us:
-    # post('/products/:product_id/reviews, { to: 'reviews#create', as: :product_reviews })
-    # which, due to the 'as' creates a method called 'product_reviews_path' 
-    # This method requires one variable, a product or product id to 'fill in'
-    # the value for ':product_id', in the path it returns 
-    # the value: '/products/:product_id/reviews' with the :product_id 
-    # "filled in"
-    # Shallow: https://api.rubyonrails.org/classes/ActionDispatch/Routing/Mapper/Resources.html#method-i-resources
-    resources :reviews, shallow: true,  only: [:create, :destroy]
+    resources :reviews, only: [:create, :destroy]
   end
+
+
 end
