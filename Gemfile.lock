@@ -63,6 +63,7 @@ GEM
     builder (3.2.4)
     byebug (11.1.2)
     concurrent-ruby (1.1.6)
+    cowsay (0.3.0)
     crass (1.0.6)
     erubi (1.9.0)
     faker (2.11.0)
@@ -185,6 +186,7 @@ DEPENDENCIES
   awesome_print
   bootsnap (>= 1.4.2)
   byebug
+  cowsay
   faker
   hirb
   interactive_editor

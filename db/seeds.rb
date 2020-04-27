@@ -1,3 +1,4 @@
+require_relative '../lib/stdout_helpers'
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
 #
@@ -6,25 +7,41 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-Review.destroy_all
-Product.destroy_all
+NUM_OF_USERS = 20
+NUM_OF_PRODUCTS = 1000
+NUM_OF_REVIEWS = 2
 
-1000.times do 
-    p = Product.create({
-        title: Faker::Hacker.noun,
-        description: Faker::Hacker.say_something_smart,
-        price: Faker::Commerce.price
+Review.destroy_all()
+Product.destroy_all()
+User.destroy_all()
+
+NUM_OF_PRODUCTS.times do |x|
+  created_at = Faker::Date.backward(days: 365)
+  product = Product.create({
+    title: "#{Faker::Cannabis.strain}-#{rand(1_000_000_000)}",
+    description: Faker::Cannabis.health_benefit,
+    price: rand(100_000),
+    created_at: created_at,
+    updated_at: created_at
+  })
+  NUM_OF_REVIEWS.times do
+    Review.create({
+      rating: rand(1..5),
+      body: Faker::Hacker.say_something_smart,
+      product: product
     })
-    if p.valid? 
-        rand(0..10).times.each do
-            Review.create(
-                rating: Faker::Number.between(from:1, to:5),
-                body: Faker::Hipster.paragraph,
-                product: p 
-            )
-        end
-    end
+  end
+  Stdout.progress_bar(NUM_OF_PRODUCTS, x, "█") { "Creating Products with Reviews" }
 end
 
-puts "Created #{Product.count} products"
-puts "Created #{Review.count} reviews"
+NUM_OF_USERS.times do |x|
+  u = User.create({
+    first_name: Faker::Games::SuperSmashBros.fighter,
+    last_name: Faker::Name.last_name,
+    email: Faker::Internet.email
+  })
+  Stdout.progress_bar(NUM_OF_USERS, x, "█") { "Creating Users" }
+end
+
+puts Cowsay.say("Created #{NUM_OF_PRODUCTS} products with #{NUM_OF_REVIEWS} reviews each!", :sheep)
+puts Cowsay.say("Created #{NUM_OF_USERS}  users!", :turtle)

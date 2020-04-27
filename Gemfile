@@ -42,6 +42,7 @@ group :development do
   gem 'hirb'
   gem 'awesome_print'
   gem 'interactive_editor'
+  gem 'cowsay'
 
 end
 
