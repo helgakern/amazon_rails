@@ -1,51 +1,51 @@
 class ProductsController < ApplicationController
-    before_action :find_product, only: [:show, :edit, :update, :destroy]
 
-    def new 
-        @product = Product.new
+    def index
+      @products = Product.all.order('created_at DESC')
     end
-
-    def create 
-        @product = Product.new product_params
-        if @product.save
-            redirect_to @product
-        else
-            render :new 
-        end
+  
+    def new
+      @product = Product.new
     end
-
-    def edit 
+  
+    def create
+      @product = Product.new product_params
+      if @product.save
+        render(plain: "Created Product #{@product.inspect}")
+      else
+        render :new
+      end
     end
-
-    def update 
-        if @product.update product_params
-            redirect_to product_path(@product)
-        else 
-            render :edit 
-        end
+  
+    def show
+      @product = Product.find(params[:id])
+      @review = Review.new
     end
-
-    def show 
-        @review = Review.new 
-        @reviews = @product.reviews.order(created_at: :desc)
+  
+    def destroy
+      @product = Product.find(params[:id])
+      @product.destroy
+      redirect_to products_path
     end
-
-    def index 
-        @products = Product.order(created_at: :DESC)
+  
+    def edit
+      @product = Product.find(params[:id])
     end
-
-    def destroy 
-        @product.destroy 
-        redirect_to products_path
+  
+    def update
+      @product = Product.find(params[:id])
+      if @product.update product_params
+        redirect_to product_path @product
+      else
+        render :edit
+      end
     end
-
-    private 
-
+  
+    private
+  
     def product_params
-        params.require(:product).permit(:title, :description, :price)
+      # docs about params.require() https://api.rubyonrails.org/classes/ActionController/Parameters.html#method-i-require
+      # docs about .permit() https://api.rubyonrails.org/classes/ActionController/Parameters.html#method-i-permit
+      params.require(:product).permit(:title, :description, :price, :sale_price)
     end
-
-    def find_product 
-        @product = Product.find params[:id]
-    end
-end
+  end

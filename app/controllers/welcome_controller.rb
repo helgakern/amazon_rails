@@ -1,19 +1,16 @@
 class WelcomeController < ApplicationController
-
-    def root
+    def home
     end
-
+  
     def about
-    end 
-
+    end
+  
     def contact_us
     end
-
-    def process_contact
-        @full_name = params[:full_name]
-        @email = params[:email]
-        @message = params[:message]
-    
-        render :thank_you
+  
+    def thank_you
+      @name = params[:name]
+      @email = params[:email]
+      @question = params[:question]
     end
-end
+  end
