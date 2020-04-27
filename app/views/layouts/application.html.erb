@@ -1,31 +1,17 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>AmazonProducts</title>
+    <title>Amazon</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
     <%= stylesheet_link_tag 'application', media: 'all' %>
     <%= javascript_pack_tag 'application' %>
   </head>
 
   <body>
-    <%= flash[:notice] || flash[:alert] %>
-
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="#">Amazon Products</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav">
-          <%= link_to 'Home', root_path, class: "nav-item nav-link" %>
-          <%= link_to 'New Product', new_product_path, class: "nav-item nav-link" %>
-          <%= link_to 'All Products', products_path, class: "nav-item nav-link" %>
-        </div>
-      </div>
-    </nav>
-    <div class="container-fluid">
+    <%= render 'shared/navbar' %>
+    <div class='container'>
       <%= yield %>
     </div>
   </body>
