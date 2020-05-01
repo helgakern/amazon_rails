@@ -23,8 +23,10 @@ Rails.application.routes.draw do
   #  patch '/products/:id', to: 'products#update'
 
   resources :products do
-    resources :reviews, only: [:create, :destroy]
+    resources :reviews, only: [:create, :destroy] do
+      resources :likes, shallow: true, only: [:create, :destroy]
+      # we nest likes routes underneath review because all likes must have a reivew. Also, by doing this we have review.id from the url
+    end
   end
-
 
 end
