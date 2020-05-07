@@ -2,11 +2,12 @@ class User < ApplicationRecord
 
   has_secure_password
 
-  has_many :products
-  has_many :reviews
-
-  has_many :likes # association methods just add extra methods to instances of this class that help query records
-  has_many :liked_reviews, through: :likes, source: :review # user is going to have many reviews, we're going to call the association liked_reviews, and active record needs to query the liked_reviews through this table called likes
+  has_many :products, dependent: :nullify
+  has_many :reviews, dependent: :nullify
+  has_many :likes, dependent: :destroy
+  has_many :liked_reviews, through: :likes, source: :review
+  has_many :favourites, dependent: :destroy
+  has_many :favourited_products, through: :favourites, source: :product
 
   scope(:created_after, -> (date) { where("created_at < ?", "#{date}") })
   scope(:search, -> (query) { where("first_name ILIKE ? OR last_name ILIKE ? OR email ILIKE ?", "%#{query}%", "%#{query}%", "%#{query}%") })

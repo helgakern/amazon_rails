@@ -29,6 +29,8 @@ class Product < ApplicationRecord
 =end
 
   has_many :reviews, -> { order('updated_at DESC') }, dependent: :destroy 
+  has_many :favourites, dependent: :destroy
+  has_many :favouriters, through: :favourites, source: :user
 
   # scope(name, body, &block) is a method that will add a class method for retrieving records
   # https://api.rubyonrails.org/classes/ActiveRecord/Scoping/Named/ClassMethods.html#method-i-scope

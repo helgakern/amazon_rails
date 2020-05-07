@@ -8,12 +8,12 @@ class Ability
     alias_action :create, :read, :update, :destroy, to: :crud
     # Define abilities for the passed in user here. For example:
     #
-    #   user ||= User.new # guest user (not logged in)
-    #   if user.admin?
-    #     can :manage, :all
-    #   else
-    #     can :read, :all
-    #   end
+      user ||= User.new # guest user (not logged in)
+      if user.admin?
+        can :manage, :all
+      else
+        can :read, :all
+      end
     #
     # The first argument to `can` is the action you are giving the user
     # permission to do.
@@ -42,17 +42,20 @@ class Ability
       review.user == user
     end
 
-    #
     can :like, Review do |review|
-    # can :create, Like do |review|
       review.user != user
-      # return false if the Review.user is current_user
     end
-    # cancancan gives you a method called `can?`
-    # can?(:like, @review) # returns true or false
 
     can :destroy, Like do |like|
       like.user == user
+    end
+
+    can :favourite, Product do |product|
+     product.user != user
+    end
+
+    can :destroy, Favourite do |favourite|
+     favourite.user == user
     end
 
   end
