@@ -8,10 +8,11 @@ require_relative '../lib/stdout_helpers'
 #   Character.create(name: 'Luke', movie: movies.first)
 
 NUM_OF_USERS = 20
-NUM_OF_PRODUCTS = 1000
-NUM_OF_REVIEWS = 2
+NUM_OF_PRODUCTS = 100
 PASSWORD = 'supersecret'
 
+Favourite.delete_all
+Like.delete_all
 Review.destroy_all()
 Product.destroy_all()
 User.destroy_all()
@@ -20,7 +21,8 @@ super_user = User.create(
   first_name: 'jon',
   last_name: 'snow',
   email: 'js@winterfell.gov',
-  password: PASSWORD
+  password: PASSWORD,
+  admin: true
 )
 
 NUM_OF_USERS.times do |x|
@@ -45,13 +47,29 @@ NUM_OF_PRODUCTS.times do |x|
     created_at: created_at,
     updated_at: created_at
   })
-  NUM_OF_REVIEWS.times do
-    Review.create({
-      rating: rand(1..5),
-      body: Faker::Hacker.say_something_smart,
-      product: product,
-      user: users.sample
-    })
+  if product.valid?
+    rand(0..5).times.each do
+      Favourite.create(
+        user: users.sample,
+        product: p
+      )
+    end
+    rand(0..10).times do
+      r = Review.create({
+        rating: rand(1..5),
+        body: Faker::Hacker.say_something_smart,
+        product: product,
+        user: users.sample
+      })
+      if r.valid?
+        rand(0..5).times.each do
+          Like.create(
+            user: users.sample,
+            review: r
+          )
+        end
+      end
+    end
   end
   Stdout.progress_bar(NUM_OF_PRODUCTS, x, "█") { "Creating Products with Reviews" }
 end
@@ -59,5 +77,6 @@ end
 products = Product.all
 reviews = Review.all
 
-puts Cowsay.say("Created #{products.count} products with #{NUM_OF_REVIEWS} reviews each!", :sheep)
-puts Cowsay.say("Created #{users.count}  users!", :turtle)
+puts Cowsay.say("Created #{products.count} products with #{Review.count} reviews each!", :sheep)
+puts Cowsay.say("Created #{users.count}  users! with #{Favourite.count} favourite products!", :turtle)
+puts Cowsay.say("Created #{Like.count} likes", :dragon)
