@@ -22,6 +22,7 @@ class ProductsController < ApplicationController
 
   def show
     @review = Review.new
+    @favourite = @product.favourites.find_by_user_id current_user if user_signed_in?
   end
 
   def destroy

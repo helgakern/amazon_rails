@@ -14,5 +14,18 @@ class LikesController < ApplicationController
   end
 
   def destroy
+    like = Like.find params[:id]
+
+    # like.destroy unless !can?(:destroy, review)
+    # like.destroy unless cannot?(:destroy, like.review)
+    if cannot?(:destroy, like)
+      flash[:warning] = "You don't own this like, so you can't destroy it"
+    elsif like.destroy
+      flash[:success] = "Unliked"
+    else
+      flash[:danger] = "Once you've you liked this you can not unlike"
+    end
+
+    redirect_to product_path(like.review.product)
   end
 end
