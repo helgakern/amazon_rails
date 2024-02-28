@@ -6,7 +6,7 @@
     "@rails/activestorage": "^7.0.3",
     "@rails/ujs": "^7.0.4",
     "@rails/webpacker": "^5.4.3",
-    "is-svg": "^4.3.2"
+    "is-svg": "^5.0.0"
   },
   "version": "0.1.0",
   "devDependencies": {
